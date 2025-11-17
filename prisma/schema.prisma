@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated"
+  provider      = "prisma-client"
+  output        = "../generated"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
@@ -25,7 +25,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
-  trees     Tree[]
+  trees         Tree[]
 
   @@unique([email])
   @@map("user")
@@ -77,16 +77,17 @@ model Verification {
 }
 
 model Tree {
-  id        String   @id
-  parentId  String?
-  parent    Tree?    @relation("TreeChildren", fields: [parentId], references: [id], onDelete: Cascade)
-  children  Tree[]   @relation("TreeChildren")
-  number    Int
-  operation String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String   @id
+  parentId   String?
+  parent     Tree?    @relation("TreeChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children   Tree[]   @relation("TreeChildren")
+  number     Float
+  operation  String?
+  leftNumber Float?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("tree")
 }

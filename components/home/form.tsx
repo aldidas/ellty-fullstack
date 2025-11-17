@@ -1,5 +1,6 @@
 "use client";
 
+import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,27 +10,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createNode } from "@/lib/actions/tree";
+import { initialState } from "@/lib/utils";
 
 interface HomeFormProps {
-  parentId?: number;
+  parentId?: string;
   parentValue?: number;
 }
 
 export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
+  const [state, action, isPending] = useActionState(createNode, initialState);
+
   return (
-    <form className="mt-8 flex space-x-2 justify-between items-center">
-      {parentId && parentValue && (
-        <>
-          <Input
-            disabled
-            name="value"
-            type="text"
-            placeholder="number"
-            className="w-[180px]"
-            defaultValue={parentValue}
-          />
-          <Select>
-            <SelectTrigger className="w-[180px]">
+    <form
+      action={action}
+      className="mt-4 flex flex-col space-y-4 p-4 border rounded-md bg-gray-50"
+    >
+      {parentValue !== undefined && (
+        <p className="text-sm text-gray-600">
+          Replying to node with value: <strong>{parentValue}</strong>
+        </p>
+      )}
+      <div className="flex space-x-2">
+        {parentId && parentValue && (
+          <Select name="operation">
+            <SelectTrigger>
               <SelectValue placeholder="Operation" />
             </SelectTrigger>
             <SelectContent>
@@ -47,18 +52,30 @@ export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
               </SelectItem>
             </SelectContent>
           </Select>
-        </>
+        )}
+        <Input
+          id="value"
+          name="value"
+          type="text"
+          placeholder="Enter a number"
+        />
+        <Button type="submit" size="sm" disabled={isPending}>
+          {isPending ? "Sending..." : "Send"}
+        </Button>
+      </div>
+      {parentId && <input type="hidden" name="parentId" value={parentId} />}
+      {state?.errors && (
+        <div className="text-red-500 text-sm">
+          <ul>
+            {Object.entries(state.errors).map(([key, errors]) =>
+              errors?.map((error) => <li key={`${key}-${error}`}>{error}</li>),
+            )}
+          </ul>
+        </div>
       )}
-      <Input
-        id="value"
-        name="value"
-        type="text"
-        placeholder="number"
-        defaultValue=""
-      />
-      <Button type="submit" size="sm">
-        Send
-      </Button>
+      {state?.message && (
+        <p className="text-red-500 text-sm">{state.message}</p>
+      )}
     </form>
   );
 }
