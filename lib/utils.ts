@@ -51,3 +51,14 @@ export function fromErrorToFormState(error: unknown, formData: FormData): FormSt
     };
   }
 }
+
+export function getInitial(fullName: string): string {
+  if (!fullName) return '';
+  const [firstName, ...restOfTheName] = fullName.split(' ');
+  let initial = firstName.charAt(0);
+  if (restOfTheName.length > 0) {
+    const restName = restOfTheName.join(' ');
+    initial = `${initial}${restName.charAt(0)}`;
+  }
+  return initial.toUpperCase();
+}

@@ -2,9 +2,13 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    networks:
+      - prisma-network
     depends_on:
       - db
     env_file:
@@ -15,9 +19,15 @@ services:
     env_file:
       - .env
     ports:
-      - "5431:5432"
+      - "5432:5432"
+    networks:
+      - prisma-network
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+networks:
+  prisma-network:
+    name: prisma-network
 
 volumes:
   postgres_data:

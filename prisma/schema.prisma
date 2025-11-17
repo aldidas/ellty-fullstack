@@ -6,7 +6,8 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma_client"
+  output   = "../generated"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -24,6 +25,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  trees     Tree[]
 
   @@unique([email])
   @@map("user")
@@ -72,4 +74,19 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Tree {
+  id        String   @id
+  parentId  String?
+  parent    Tree?    @relation("TreeChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children  Tree[]   @relation("TreeChildren")
+  number    Int
+  operation String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("tree")
 }

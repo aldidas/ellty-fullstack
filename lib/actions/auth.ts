@@ -1,9 +1,18 @@
 "use server";
 
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { signInSchema, signUpSchema } from "@/lib/schemas/auth";
 import { fromErrorToFormState, type FormState } from "@/lib/utils";
+
+export async function getSession() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  console.log({ session });
+  return session;
+}
 
 export async function signIn(
   _: FormState | undefined,
@@ -32,6 +41,7 @@ export async function signIn(
   } catch (error) {
     return fromErrorToFormState(error, formData);
   }
+  redirect("/");
 }
 
 export async function signUp(
@@ -64,4 +74,5 @@ export async function signUp(
   } catch (error) {
     return fromErrorToFormState(error, formData);
   }
+  redirect("/");
 }

@@ -8,10 +8,16 @@ services:
     command: npm run dev
     volumes:
       - .:/app
-      - /app/generated/prisma_client
+      - /app/generated
       - /app/node_modules
       - /app/.next
     ports:
       - "3000:3000"
+    networks:
+      - prisma-network
     env_file:
       - .env
+
+networks:
+  prisma-network:
+    name: prisma-network
