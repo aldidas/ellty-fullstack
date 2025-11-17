@@ -19,6 +19,7 @@ export function SignInForm() {
           name="email"
           type="email"
           placeholder="m@example.com"
+          defaultValue={(state?.formData?.get("email") ?? "") as string}
         />
         {state?.errors?.email && (
           <p className="text-sm text-red-500">{state.errors.email}</p>

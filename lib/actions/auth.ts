@@ -17,7 +17,7 @@ export async function signIn(
   });
 
   if (!signInData.success) {
-    return fromErrorToFormState(signInData.error);
+    return fromErrorToFormState(signInData.error, formData);
   }
 
   try {
@@ -30,7 +30,7 @@ export async function signIn(
       headers: await headers(),
     });
   } catch (error) {
-    return fromErrorToFormState(error);
+    return fromErrorToFormState(error, formData);
   }
 }
 
@@ -49,7 +49,7 @@ export async function signUp(
   });
 
   if (!signUpData.success) {
-    return fromErrorToFormState(signUpData.error);
+    return fromErrorToFormState(signUpData.error, formData);
   }
 
   try {
@@ -62,6 +62,6 @@ export async function signUp(
       },
     });
   } catch (error) {
-    return fromErrorToFormState(error);
+    return fromErrorToFormState(error, formData);
   }
 }

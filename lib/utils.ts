@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge"
 
 
 export interface FormState {
+  formData: FormData | null;
   message: string;
   status: 'SUCCESS' | 'ERROR' | 'UNSET';
   errors: Record<string, string[] | undefined>;
@@ -11,6 +12,7 @@ export interface FormState {
 }
 
 export const initialState: FormState = {
+  formData: null,
   status: 'UNSET',
   message: '',
   errors: {},
@@ -21,9 +23,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function fromErrorToFormState(error: unknown): FormState {
+export function fromErrorToFormState(error: unknown, formData: FormData): FormState {
   if (error instanceof ZodError) {
     return {
+      formData: formData ?? null,
       message: '',
       status: 'ERROR',
       errors: error.flatten().fieldErrors,
@@ -31,6 +34,7 @@ export function fromErrorToFormState(error: unknown): FormState {
     };
   } else if (error instanceof Error) {
     return {
+      formData: formData ?? null,
       message: error.message,
       status: 'ERROR',
       errors: {},
@@ -39,6 +43,7 @@ export function fromErrorToFormState(error: unknown): FormState {
   } else {
     const errorData = error as Record<string, string>;
     return {
+      formData: formData ?? null,
       message: errorData?.message || 'An unknown error occured.',
       status: 'ERROR',
       errors: {},

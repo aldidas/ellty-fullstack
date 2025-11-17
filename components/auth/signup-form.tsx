@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState } from 'react';
+import { useActionState } from "react";
 import { signUp } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { initialState } from '@/lib/utils'
+import { initialState } from "@/lib/utils";
 
 export function SignUpForm() {
   const [state, action] = useActionState(signUp, initialState);
@@ -19,6 +19,7 @@ export function SignUpForm() {
           name="name"
           type="text"
           placeholder="John Doe"
+          defaultValue={(state?.formData?.get("name") ?? "") as string}
         />
         {state?.errors?.name && (
           <p className="text-sm text-red-500">{state.errors.name}</p>
@@ -31,6 +32,7 @@ export function SignUpForm() {
           name="email"
           type="email"
           placeholder="m@example.com"
+          defaultValue={(state?.formData?.get("email") ?? "") as string}
         />
         {state?.errors?.email && (
           <p className="text-sm text-red-500">{state.errors.email}</p>
