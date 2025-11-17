@@ -28,7 +28,7 @@ export default function HomeForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (state.status === "SUCCESS") {
+    if (state?.status === "SUCCESS") {
       formRef.current?.reset();
       if (onSuccess) {
         onSuccess();

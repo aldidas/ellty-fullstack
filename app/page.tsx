@@ -3,7 +3,6 @@ import { getSession } from "@/lib/actions/auth";
 import { getAllNodes } from "@/lib/actions/tree";
 import HomeHeader from "@/components/home/header";
 import Tree from "@/components/home/tree";
-import HomeForm from "@/components/home/form";
 
 export default async function Home() {
   const session = await getSession();
