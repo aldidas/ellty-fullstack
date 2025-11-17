@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,13 +16,29 @@ import { initialState } from "@/lib/utils";
 interface HomeFormProps {
   parentId?: string;
   parentValue?: number;
+  onSuccess?: () => void;
 }
 
-export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
+export default function HomeForm({
+  parentId,
+  parentValue,
+  onSuccess,
+}: HomeFormProps) {
   const [state, action, isPending] = useActionState(createNode, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.status === "SUCCESS") {
+      formRef.current?.reset();
+      if (onSuccess) {
+        onSuccess();
+      }
+    }
+  }, [state, onSuccess]);
 
   return (
     <form
+      ref={formRef}
       action={action}
       className="mt-4 flex flex-col space-y-4 p-4 border rounded-md bg-gray-50"
     >
@@ -33,7 +49,7 @@ export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
       )}
       <div className="flex space-x-2">
         {parentId && parentValue && (
-          <Select name="operation">
+          <Select name="operation" required>
             <SelectTrigger>
               <SelectValue placeholder="Operation" />
             </SelectTrigger>
@@ -58,6 +74,7 @@ export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
           name="value"
           type="text"
           placeholder="Enter a number"
+          required
         />
         <Button type="submit" size="sm" disabled={isPending}>
           {isPending ? "Sending..." : "Send"}
@@ -73,7 +90,7 @@ export default function HomeForm({ parentId, parentValue }: HomeFormProps) {
           </ul>
         </div>
       )}
-      {state?.message && (
+      {state?.message && state.status === "ERROR" && (
         <p className="text-red-500 text-sm">{state.message}</p>
       )}
     </form>

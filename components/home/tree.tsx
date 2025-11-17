@@ -51,7 +51,11 @@ export default function Tree({ treeData }: TreeProps) {
 
           {replyingToNodeId === node.id && (
             <div className="mt-2">
-              <HomeForm parentId={node.id} parentValue={node.number} />
+              <HomeForm
+                parentId={node.id}
+                parentValue={node.number}
+                onSuccess={handleCancelClick}
+              />
               <Button
                 variant="ghost"
                 size="sm"

@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { nodeSchema } from "@/lib/schemas/tree";
 import { getSession } from "@/lib/actions/auth";
-import { fromErrorToFormState, type FormState } from "@/lib/utils";
+import { fromErrorToFormState, type FormState, initialState } from "@/lib/utils";
 import { generateTree, getNewValue } from "@/lib/tree-utils";
 import { Prisma } from "@/generated/client";
 
@@ -84,4 +84,9 @@ export async function createNode(
     return fromErrorToFormState(error, formData);
   }
   revalidatePath("/");
+  return {
+    ...initialState,
+    status: "SUCCESS",
+    message: "Node created successfully",
+  };
 }
