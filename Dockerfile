@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
+COPY prisma ./prisma/
 
 # Install dependencies
 RUN npm install
@@ -24,6 +25,7 @@ WORKDIR /app
 
 # Copy the built application from the 'build' stage
 COPY --from=build /app/.next ./.next
+COPY --from=build /app/generated/prisma_client ./generated/prisma_client
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/public ./public
