@@ -18,10 +18,23 @@ export const initialState: FormState = {
   timestamp: Date.now(),
 };
 
-export function cn(...inputs: ClassValue[]) {
+/**
+ * Combines multiple class names into a single string, resolving conflicts.
+ * Uses clsx for conditional classes and tailwind-merge for resolving Tailwind CSS conflicts.
+ * @param inputs - A list of class names or conditional class objects.
+ * @returns A single string of merged and optimized class names.
+ */
+export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Transforms an error object into a `FormState` object for server actions.
+ * Handles ZodErrors, standard Errors, and other unknown error types.
+ * @param error - The error caught, can be of any type.
+ * @param formData - The FormData from the form submission.
+ * @returns A `FormState` object with an "ERROR" status and extracted error messages.
+ */
 export function fromErrorToFormState(
   error: unknown,
   formData: FormData,
@@ -54,6 +67,11 @@ export function fromErrorToFormState(
   }
 }
 
+/**
+ * Generates initials from a full name.
+ * @param fullName - The full name string (e.g., "John Doe").
+ * @returns The initials in uppercase (e.g., "JD"). Returns an empty string if fullName is empty.
+ */
 export function getInitial(fullName: string): string {
   if (!fullName) return "";
   const [firstName, ...restOfTheName] = fullName.split(" ");
