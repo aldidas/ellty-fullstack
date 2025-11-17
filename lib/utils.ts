@@ -74,10 +74,11 @@ export function fromErrorToFormState(
  */
 export function getInitial(fullName: string): string {
   if (!fullName) return "";
-  const [firstName, ...restOfTheName] = fullName.split(" ");
+  const [firstName, ...restOfTheName] = fullName.trim().split(" ");
   let initial = firstName.charAt(0);
-  if (restOfTheName.length > 0) {
-    const restName = restOfTheName.join(" ");
+  const validRestOfTheName = restOfTheName.filter(word => !!word);
+  if (validRestOfTheName.length > 0) {
+    const restName = validRestOfTheName.join(" ");
     initial = `${initial}${restName.charAt(0)}`;
   }
   return initial.toUpperCase();
