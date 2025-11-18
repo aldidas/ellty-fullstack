@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ellty Fullstack Project: Operational Transformation Tree
+
+This is a full-stack web application built with Next.js that allows users to collaboratively build a tree structure of numerical operations. Each node in the tree represents a number calculated from its parent's value and a chosen operation.
+
+## Features
+
+-   User authentication (Sign up / Sign in)
+-   View a hierarchical tree of numerical nodes
+-   Create new root nodes
+-   Reply to any existing node to create a child node with a new calculation
+-   Real-time updates (via server-side data fetching and revalidation)
+
+## Tech Stack
+
+-   **Framework**: [Next.js](https://nextjs.org/) (with App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Database**: [PostgreSQL](https://www.postgresql.org/)
+-   **ORM**: [Prisma](https://www.prisma.io/)
+-   **Authentication**: [better-auth](https://www.npmjs.com/package/better-auth)
+-   **UI**: [React](https://react.dev/)
+-   **Component Library**: [shadcn/ui](https://ui.shadcn.com/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Testing**: [Vitest](https://vitest.dev/)
+-   **Containerization**: [Docker](https://www.docker.com/)
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to get the project up and running on your local machine.
+
+### Prerequisites
+
+-   [Node.js](https://nodejs.org/en) (v20 or later recommended)
+-   [npm](https://www.npmjs.com/)
+-   [Docker](https://www.docker.com/products/docker-desktop/) and Docker Compose
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd ellty-fullstack
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Set Up Environment Variables
+
+Create a `.env` file in the root of the project by copying the example:
+
+```bash
+cp .env.example .env
+```
+
+The `.env` file should contain the `DATABASE_URL` for connecting to the PostgreSQL instance managed by Docker.
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+```
+
+### 4. Start the Database
+
+Run the PostgreSQL database in a Docker container using the development compose file:
+
+```bash
+docker-compose up -d
+```
+
+### 5. Apply Database Schema
+
+Push the Prisma schema to your new database instance. This will create the necessary tables.
+
+```bash
+npx prisma db push
+```
+
+### 6. Run the Development Server
+
+Now, start the Next.js development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Running Tests
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses Vitest for unit testing the utility functions. To run the tests, first install the testing dependencies:
 
-## Learn More
+```bash
+npm install -D vitest @vitest/ui jsdom vite-tsconfig-paths
+```
 
-To learn more about Next.js, take a look at the following resources:
+Then, run the test script:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📁 Project Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   `app/`: Contains the pages and layouts of the Next.js application (App Router).
+-   `components/`: Contains shared React components, including UI components from shadcn/ui.
+-   `lib/`: Contains utility functions, database logic, authentication actions, and schemas.
+-   `prisma/`: Contains the Prisma schema file (`schema.prisma`) that defines the database models.
+-   `docker-compose.yml`: Docker Compose file for setting up the development database.
+-   `vitest.config.ts`: Configuration file for the Vitest test runner.
