@@ -57,7 +57,13 @@ cp .env.example .env
 The `.env` file should contain the `DATABASE_URL` for connecting to the PostgreSQL instance managed by Docker.
 
 ```env
+POSTGRES_USER=dbuser
+POSTGRES_PASSWORD=dbpassword
+POSTGRES_DB=dbname
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+BETTER_AUTH_SECRET=secret_value_here
+BETTER_AUTH_URL=http://localhost:3000 # Base URL of your app
+PUBLIC_BETTER_AUTH_URL=http://localhost:3000 # Base URL of your app
 ```
 
 ### 4. Start the Database
